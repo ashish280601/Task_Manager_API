@@ -84,12 +84,12 @@ export default class UserController {
         try {
             const { email, password } = req.body;
 
-            if (req.recaptcha.error) {
-                return res.status(400).json({
-                    message: "reCAPTCHA verification failed. Please try again.",
-                    status: false,
-                });
-            }
+            // if (req.recaptcha.error) {
+            //     return res.status(400).json({
+            //         message: "reCAPTCHA verification failed. Please try again.",
+            //         status: false,
+            //     });
+            // }
 
             // finding the email user is present or not
             const user = await this.userRepository.findByEmail(email);
@@ -104,11 +104,12 @@ export default class UserController {
                 const result = await bcrypt.compare(password, user.password);
                 // password matches then generate a token
                 if (result) {
+                    console.log("userName", user.fullName)
                     const token = jwt.sign(
                         {
                             userID: user._id,
                             email: user.email,
-                            name: user.name,
+                            name: user.fullName,
                         },
                         process.env.SECRET_KEY,
                         {

@@ -11,8 +11,8 @@ const userController = new UserController();
 userRouter.post("/signup", userController.validateSignUp(), (req, res) => {
     userController.signUp(req, res);
 });
-
-userRouter.post("/login", recaptcha.middleware.verify, (req, res) => {
+// recaptcha.middleware.verify
+userRouter.post("/login", (req, res) => {
     userController.signIn(req, res);
 });
 
