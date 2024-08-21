@@ -44,7 +44,8 @@ export default class UserController {
             return res.status(400).json({
                 errors: errors.array(),
                 message: "Validation error",
-                status: false,
+                success: false,
+                status: 400
             });
         }
 
@@ -67,12 +68,14 @@ export default class UserController {
             return res.status(200).json({
                 newUser,
                 message: "User created successfully",
-                status: true,
+                success: true,
+                status: 200
             });
         } catch (error) {
             // console.log("Error in signUp", error);
             return res.status(500).json({
                 message: "Something went wrongs",
+                success: false,
                 status: 500,
             });
         }
@@ -84,20 +87,21 @@ export default class UserController {
         try {
             const { email, password } = req.body;
 
-            // if (req.recaptcha.error) {
-            //     return res.status(400).json({
-            //         message: "reCAPTCHA verification failed. Please try again.",
-            //         status: false,
-            //     });
-            // }
+            if (req.recaptcha.error) {
+                return res.status(400).json({
+                    message: "reCAPTCHA verification failed. Please try again.",
+                    status: false,
+                });
+            }
 
             // finding the email user is present or not
             const user = await this.userRepository.findByEmail(email);
             // if email user is not found send error
             if (!user) {
-                return res.status(400).json({
+                return res.status(401).json({
                     message: "Invalid user email credentials",
-                    status: false,
+                    success: false,
+                    status: 401,
                 });
             } else {
                 // compare the passowrd
@@ -119,22 +123,25 @@ export default class UserController {
                     return res.status(200).json({
                         data: {
                             message: "User Login Successful",
-                            status: true,
+                            success: true,
+                            status: 200,
                             userID: user._id,
                             email: user.email,
                             token,
                         }
                     });
                 }
-                return res.status(400).json({
+                return res.status(401).json({
                     message: "Invalid user password credentials",
-                    status: false,
+                    success: false,
+                    status: 401,
                 });
             }
         } catch (error) {
             console.log("Error in signIn", error);
             return res.status(500).json({
                 message: "Something went wrongs",
+                success: false,
                 status: 500,
             });
         }
@@ -154,12 +161,14 @@ export default class UserController {
             await OPTVerifyEmail(resetPasswordRequest.email, otp.toString());
             return res.status(200).json({
                 message: "OTP send successfully",
-                status: true,
+                success:true,
+                status: 200,
             });
         } catch (error) {
             // console.log("Error while generating request reset password", error);
             return res.status(500).json({
                 message: "Something went wrongs",
+                success: false,
                 status: 500,
             });
         }
@@ -174,18 +183,21 @@ export default class UserController {
             if (otp !== isValid.otp) {
                 return res.status(400).json({
                     message: "OTP is not valid",
-                    status: false,
+                    success: false,
+                    status: 400,
                 });
             } else {
                 return res.status(200).json({
                     message: "OTP verified successfully",
-                    status: true,
+                    success: true,
+                    status: 200,
                 });
             }
         } catch (error) {
             // console.log("Error while reset password", error);
             return res.status(500).json({
                 message: "Something went wrong",
+                success: false,
                 status: 500,
             });
         }
@@ -212,12 +224,14 @@ export default class UserController {
             return res.status(200).json({
                 updateUserPassword,
                 message: "Password updated successfully",
-                status: true,
+                success: true,
+                status: 200,
             });
         } catch (error) {
             // console.log("Error while reset password", error);
             return res.status(500).json({
                 message: "Something went wrong",
+                success: false,
                 status: 500,
             });
         }
