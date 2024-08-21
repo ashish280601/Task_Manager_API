@@ -12,12 +12,15 @@ const transport = nodemailer.createTransport({
 
 // creating an function to send an joinging mail.
 async function emailServiceSignUp(userEmail, userName) {
+  console.log("userEmail", userEmail);
+  console.log("userName", userName);
+  
   try {
     await transport.sendMail({
       from: process.env.EMAIL_USER,
       to: userEmail,
-      subject: `Welcome to  Node Authentication ${userName}`,
-      text: `You have a great choice ${userName} that you had selected our node authenticatio platform.`,
+      subject: `Welcome to  Task Management Web application ${userName}`,
+      text: `You have a great choice ${userName} that you had selected our platform which make user life easier.`,
     });
     console.log("Email send successfully " + `to user ${userName}`);
   } catch (error) {

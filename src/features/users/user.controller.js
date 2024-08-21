@@ -63,7 +63,7 @@ export default class UserController {
             console.log("userData", userData);
             const newUser = await this.userRepository.signUp(userData);
             console.log("newUser", newUser);
-            await emailServiceSignUp(newUser.email, newUser.name);
+            await emailServiceSignUp(newUser.email, newUser.fullName);
             return res.status(200).json({
                 newUser,
                 message: "User created successfully",
@@ -189,7 +189,6 @@ export default class UserController {
                 status: 500,
             });
         }
-        next();
     }
 
     async resetPassword(req, res) {
