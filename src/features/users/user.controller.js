@@ -1,12 +1,11 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { body, validationResult } from "express-validator";
 
 import UserRepository from "./user.repository.js";
-import "../../../env.js";
-// import emailServiceSignUp, {
-//     OPTVerifyEmail,
-// } from "../../services/emailService.js";
-import { body, validationResult } from "express-validator";
+import emailServiceSignUp, {
+    OPTVerifyEmail,
+} from "../../services/emailService.js";
 
 export default class UserController {
     constructor() {
@@ -64,7 +63,7 @@ export default class UserController {
             console.log("userData", userData);
             const newUser = await this.userRepository.signUp(userData);
             console.log("newUser", newUser);
-            // await emailServiceSignUp(newUser.email, newUser.name);
+            await emailServiceSignUp(newUser.email, newUser.name);
             return res.status(200).json({
                 newUser,
                 message: "User created successfully",
@@ -151,7 +150,7 @@ export default class UserController {
             const resetPasswordRequest =
                 await this.userRepository.requestResetPassword(userID, otp.toString());
             // console.log("resetPasswordRequest", resetPasswordRequest);
-            // await OPTVerifyEmail(resetPasswordRequest.email, otp.toString());
+            await OPTVerifyEmail(resetPasswordRequest.email, otp.toString());
             return res.status(200).json({
                 message: "OTP send successfully",
                 status: true,
