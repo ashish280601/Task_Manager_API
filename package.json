@@ -1,0 +1,20 @@
+{
+  "name": "task_manager_api",
+  "version": "1.0.0",
+  "description": "A web application to manage all the task of an company user from creating of task to the completion progress to make user life easy",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Ashish Mehra",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "mongodb": "^6.8.0",
+    "mongoose": "^8.5.3",
+    "multer": "^1.4.5-lts.1"
+  }
+}
