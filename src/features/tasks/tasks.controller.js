@@ -48,7 +48,7 @@ export default class TaskController {
         try {
             const newTaskData = { title, description, status, user }
             console.log("new Task data", newTaskData);
-            
+
             const task = await this.taskRepository.addTaskData(newTaskData);
             console.log("taskData", task);
 
@@ -62,7 +62,7 @@ export default class TaskController {
                     }
                 });
             }
-            res.status(201).json({
+            return res.status(201).json({
                 data: {
                     task,
                     message: "Task added successfully",
@@ -71,7 +71,7 @@ export default class TaskController {
                 }
             });
         } catch (error) {
-            res.status(500).json({
+            return res.status(500).json({
                 data: {
                     task: {},
                     message: error.message,
@@ -82,19 +82,80 @@ export default class TaskController {
         }
     }
 
-    async updateTask() {
+    async updateTask(req, res) {
+        const { title, description, status } = req.body;
+        const { id } = req.params;
+
         try {
+            const updateData = { title, description, status };
+            const updatedTask = await this.taskRepository.updateTaskData(id, updateData);
 
+            if (!updatedTask) {
+                return res.status(404).json({
+                    data: {
+                        task: {},
+                        message: "Task not found",
+                        success: false,
+                        status: 404
+                    }
+                });
+            }
+
+            res.json({
+                data: {
+                    task: updatedTask,
+                    message: "Task updated successfully",
+                    success: true,
+                    status: 200
+                }
+            });
         } catch (error) {
-
+            res.status(500).json({
+                data: {
+                    data: {},
+                    message: error.message,
+                    success: false,
+                    status: 500
+                }
+            });
         }
     }
 
-    async deleteTask() {
+    async deleteTask(req, res) {
+        const { id } = req.params;
+
         try {
+            const deleteTask = await this.taskRepository.deleteTask(id);
 
+            if (!deleteTask) {
+                return res.status(404).json({
+                    data: {
+                        task: {},
+                        message: "Task not found",
+                        success: false,
+                        status: 404
+                    }
+                });
+            }
+
+            res.json({
+                data: {
+                    task: deleteTask,
+                    message: "Task deleted successfully",
+                    success: true,
+                    status: 200
+                }
+            });
         } catch (error) {
-
+            res.status(500).json({
+                data: {
+                    data: {},
+                    message: error.message,
+                    success: false,
+                    status: 500
+                }
+            });
         }
     }
 }
+

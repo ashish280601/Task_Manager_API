@@ -21,7 +21,7 @@ export default class TaskRepository {
         try {
             const newTask = new TaskModel(newTaskData);
             console.log("new Task model", newTask);
-            
+
             const addTask = await newTask.save();
             if (!addTask) {
                 throw new Error("Please check the data format", 400)
@@ -35,11 +35,29 @@ export default class TaskRepository {
         }
     }
 
-    async updateTaskData() {
-
+    async updateTaskData(taskId, updateData) {
+        try {
+            const updatedTask = await TaskModel.findByIdAndUpdate(taskId, updateData, { new: true });
+            if (!updatedTask) {
+                throw new Error("Task not found or failed to update");
+            }
+            return updatedTask;
+        } catch (error) {
+            console.error("Error occurred while updating task:", error);
+            throw new Error(error.message);
+        }
     }
 
-    async deleteTask() {
-
+    async deleteTask(id) {
+        try {
+            const deleteTask = await TaskModel.findByIdAndDelete(id);
+            if (!deleteTask) {
+                throw new Error("Task not found or failed to delete");
+            }
+            return deleteTask;
+        } catch (error) {
+            console.error("Error occurred while deleting task:", error);
+            throw new Error(error.message);
+        }
     }
 }

@@ -14,11 +14,11 @@ taskRouter.post('/add', jwtAuth, (req, res) => {
     taskController.addTask(req,res);
 })
 
-taskRouter.put('/update', jwtAuth, (req, res) => {
+taskRouter.put('/update/:id', jwtAuth, (req, res) => {
     taskController.updateTask(req, res);
 })
 
-taskRouter.delete('/delete', jwtAuth, (req, res) => {
+taskRouter.delete('/delete/:id', jwtAuth, (req, res) => {
     taskController.deleteTask(req, res);
 })
 
