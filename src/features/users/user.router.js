@@ -8,11 +8,12 @@ const userController = new UserController();
 
 
 // Manual Authentication
-userRouter.post('/signup', userController.validateSignUp(),recaptcha.middleware.verify, (req, res) => {
+// recaptcha.middleware.verify
+userRouter.post('/signup', userController.validateSignUp(), (req, res) => {
     userController.signUp(req, res);
 });
-
-userRouter.post('/login',recaptcha.middleware.verify, (req, res) => {
+// recaptcha.middleware.verify
+userRouter.post('/login', (req, res) => {
     userController.signIn(req, res);
 });
 
