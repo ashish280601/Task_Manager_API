@@ -10,7 +10,7 @@ import mongooseConnectToDB from "./src/config/mongooseConfig.js";
 const app = express();
 
 var corsOptions = {
-  origin: ["http://localhost:5176", "https://bookish-guide-44qxw4xp4x5f969-5173.app.github.dev"],
+  origin: ["http://localhost:5173", "https://bookish-guide-44qxw4xp4x5f969-5173.app.github.dev", "https://task-manager-yprb.onrender.com",],
   allowedHeaders: "*",
 };
 
