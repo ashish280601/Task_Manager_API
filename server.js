@@ -1,12 +1,20 @@
 import "./env.js";
 // inbuilt import
-import express from "express"
+import express from "express";
+import cors from "cors";
 
 // custom user import
 import router from "./routes.js";
 import mongooseConnectToDB from "./src/config/mongooseConfig.js";
 
 const app = express();
+
+var corsOptions = {
+  origin: ["http://localhost:5176", "https://bookish-guide-44qxw4xp4x5f969-5173.app.github.dev/"],
+  allowedHeaders: "*",
+};
+
+app.use(cors(corsOptions))
 
 const port = process.env.PORT || 3000;
 
