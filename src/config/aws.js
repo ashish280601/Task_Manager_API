@@ -1,12 +1,12 @@
-import AWS from "aws-sdk";
+import { S3Client } from "@aws-sdk/client-s3";
 
-// configuring aws with access and secret key.
-AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION
+// Configure AWS S3 client with access key, secret key, and region
+const s3 = new S3Client({
+    region: process.env.AWS_REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    }
 });
-
-const s3 = new AWS.S3();
 
 export default s3;

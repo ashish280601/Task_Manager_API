@@ -1,4 +1,4 @@
-import authModel from "./authSocial.schema";
+import authModel from "./authSocial.schema.js";
 
 export default class SocialRepository{
     async findGoogleId(googleId){

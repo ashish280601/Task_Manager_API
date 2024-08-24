@@ -1,4 +1,4 @@
-import s3 from "../config/aws";
+import s3 from "../config/aws.js";
 import { v4 as uuidv4 } from "uuid";
 
 export const uploadFileToS3 = async (file) => {
