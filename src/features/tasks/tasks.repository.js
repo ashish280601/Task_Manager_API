@@ -1,16 +1,34 @@
 import TaskModel from "./task.schema.js";
 
 export default class TaskRepository {
-    async getTaskData(user) {
+    async getTaskData(user, searchTitle, sortBy) {
+        // Create query object
+        const query = { userId: user };
+    
+        // Add search filter if searchTitle is provided
+        if (searchTitle) {
+            query.title = { $regex: searchTitle, $options: 'i' }; // Case-insensitive search
+        }
+    
+        // Determine sort order
+        let sortOrder = {};
+        if (sortBy === 'recent') {
+            sortOrder = { createdAt: -1 }; // Sort by recent (descending)
+        } else if (sortBy === 'oldest') {
+            sortOrder = { createdAt: 1 }; // Sort by oldest (ascending)
+        }
+    
         try {
-            const allTask = await TaskModel.find({ user });
-            if (!allTask) {
-                throw new Error("Data not found")
-            }
-            return allTask
+            // Fetch tasks from the database
+            const tasks = await TaskModel.find(query).sort(sortOrder).exec();
+            
+            if (!tasks || tasks.length === 0) {
+                throw new Error("No tasks found for the given criteria");
+            } 
+            return tasks;
         } catch (error) {
             throw new Error(
-                "Something went wrong while fetching task data from database",
+                `Something went wrong while fetching task data from database: ${error.message}`,
                 500
             );
         }

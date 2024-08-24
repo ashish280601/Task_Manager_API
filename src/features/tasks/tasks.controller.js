@@ -8,11 +8,15 @@ export default class TaskController {
 
     async getTasks(req, res) {
         const user = req.userID;
-        console.log("user", user)
+        const { searchTitle, sortBy } = req.query;
+
+        console.log("user", user);
+    console.log("searchTitle", searchTitle);
+    console.log("sortBy", sortBy);
         try {
-            const tasks = await this.taskRepository.getTaskData(user);
+            const tasks = await this.taskRepository.getTaskData(user, searchTitle, sortBy);
             console.log("tasks", tasks)
-            if (!tasks) {
+            if (!tasks || tasks.length === 0) {
                 return res.status(404).json({
                     data: {
                         tasks,
