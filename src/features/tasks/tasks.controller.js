@@ -11,8 +11,8 @@ export default class TaskController {
         const { searchTitle, sortBy } = req.query;
 
         console.log("user", user);
-    console.log("searchTitle", searchTitle);
-    console.log("sortBy", sortBy);
+        console.log("searchTitle", searchTitle);
+        console.log("sortBy", sortBy);
         try {
             const tasks = await this.taskRepository.getTaskData(user, searchTitle, sortBy);
             console.log("tasks", tasks)

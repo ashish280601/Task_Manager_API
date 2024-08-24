@@ -86,7 +86,7 @@ export default class UserController {
                 fullName,
                 email,
                 password: hashedPassword,
-                profilePhotoUrl
+                image: profilePhotoUrl
             };
             console.log("userData", userData);
             const newUser = await this.userRepository.signUp(userData);
@@ -123,6 +123,8 @@ export default class UserController {
 
             // finding the email user is present or not
             const user = await this.userRepository.findByEmail(email);
+            console.log("userData", user);
+            
             // if email user is not found send error
             if (!user) {
                 return res.status(401).json({

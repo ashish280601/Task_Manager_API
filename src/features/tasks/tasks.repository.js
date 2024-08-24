@@ -3,8 +3,9 @@ import TaskModel from "./task.schema.js";
 export default class TaskRepository {
     async getTaskData(user, searchTitle, sortBy) {
         // Create query object
-        const query = { userId: user };
-    
+        const query = { user };
+        console.log("userID", query);
+        
         // Add search filter if searchTitle is provided
         if (searchTitle) {
             query.title = { $regex: searchTitle, $options: 'i' }; // Case-insensitive search
