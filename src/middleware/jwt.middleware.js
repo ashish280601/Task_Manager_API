@@ -9,14 +9,16 @@ const jwtAuth = async (req, res, next) => {
   if (!authHeader) {
     return res.status(401).json({
       message: "Authorization header is missing",
-      status: false,
+      success: false,
+      status: 401,
     });
   }
   // Check if the authorization header starts with "Bearer "
   if (!authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
       message: "Invalid authorization header format",
-      status: false,
+      success: false,
+      status: 401,
     });
   }
 
@@ -27,7 +29,8 @@ const jwtAuth = async (req, res, next) => {
   if (!token) {
     return res.status(401).json({
         message: 'Unauthorized user, token missing',
-        status: false
+        success: false,
+        status: 401
     });
 }
 
@@ -43,7 +46,8 @@ const jwtAuth = async (req, res, next) => {
     console.log("Error", error);
     return res.status(401).json({
       message: "Unauthorized user",
-      status: false,
+      success: false,
+      status: 401,
     });
   }
 };
