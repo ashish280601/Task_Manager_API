@@ -6,6 +6,10 @@ import UserRepository from "./user.repository.js";
 import emailServiceSignUp, {
     OPTVerifyEmail,
 } from "../../services/emailService.js";
+import { uploadFileToS3 } from "../../utils/s3Uploader.js";
+import multer from "multer";
+
+const upload = multer();
 
 export default class UserController {
     constructor() {
@@ -32,6 +36,22 @@ export default class UserController {
             body('password')
                 .isLength({ min: 6 })
                 .withMessage('Password must be at least 6 characters long'),
+            body('image')
+                .custom((value, { req }) => {
+                    if (!req.file) {
+                        throw new Error('Image file is required');
+                    }
+
+                    const validMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                    if (!validMimeTypes.includes(req.file.mimetype)) {
+                        throw new Error('Invalid image format. Only JPEG, PNG, and GIF are allowed.');
+                    }
+
+                    if (req.file.size > 5 * 1024 * 1024) { // 5 MB limit
+                        throw new Error('Image file is too large. Maximum allowed size is 5MB.');
+                    }
+                    return true;
+                })
         ];
     }
 
@@ -56,10 +76,17 @@ export default class UserController {
             const saltRound = 10;
             const hashedPassword = await bcrypt.hash(password, saltRound);
             console.log("hashedPassword", hashedPassword);
+
+            let profilePhotoUrl = null;
+            if (req.file) {
+                profilePhotoUrl = await uploadFileToS3(req.file);
+            }
+
             const userData = {
                 fullName,
                 email,
                 password: hashedPassword,
+                profilePhotoUrl
             };
             console.log("userData", userData);
             const newUser = await this.userRepository.signUp(userData);
@@ -161,7 +188,7 @@ export default class UserController {
             await OPTVerifyEmail(resetPasswordRequest.email, otp.toString());
             return res.status(200).json({
                 message: "OTP send successfully",
-                success:true,
+                success: true,
                 status: 200,
             });
         } catch (error) {
