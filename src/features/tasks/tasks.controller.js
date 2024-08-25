@@ -16,7 +16,7 @@ export default class TaskController {
         try {
             const tasks = await this.taskRepository.getTaskData(user, searchTitle, sortBy);
             console.log("tasks", tasks)
-            if (!tasks || tasks.length === 0) {
+            if (!tasks) {
                 return res.status(404).json({
                     data: {
                         tasks,
