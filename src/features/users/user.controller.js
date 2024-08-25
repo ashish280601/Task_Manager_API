@@ -114,7 +114,7 @@ export default class UserController {
         try {
             const { email, password } = req.body;
 
-            if (req.recaptcha.error) {
+            if (req.recaptcha && req.recaptcha.error) {
                 return res.status(400).json({
                     message: "reCAPTCHA verification failed. Please try again.",
                     status: false,
@@ -156,7 +156,7 @@ export default class UserController {
                             status: 200,
                             userID: user._id,
                             email: user.email,
-                            name: user.name,
+                            name: user.fullName,
                             userImg: user.image,
                             token,
                         }
