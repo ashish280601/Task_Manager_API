@@ -142,7 +142,7 @@ export default class TaskController {
                 });
             }
 
-            res.json({
+            return res.json({
                 data: {
                     task: deleteTask,
                     message: "Task deleted successfully",
@@ -151,7 +151,7 @@ export default class TaskController {
                 }
             });
         } catch (error) {
-            res.status(500).json({
+            return res.status(500).json({
                 data: {
                     data: {},
                     message: error.message,
