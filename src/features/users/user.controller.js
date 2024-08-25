@@ -114,12 +114,12 @@ export default class UserController {
         try {
             const { email, password } = req.body;
 
-            // if (req.recaptcha.error) {
-            //     return res.status(400).json({
-            //         message: "reCAPTCHA verification failed. Please try again.",
-            //         status: false,
-            //     });
-            // }
+            if (req.recaptcha.error) {
+                return res.status(400).json({
+                    message: "reCAPTCHA verification failed. Please try again.",
+                    status: false,
+                });
+            }
 
             // finding the email user is present or not
             const user = await this.userRepository.findByEmail(email);
@@ -156,6 +156,8 @@ export default class UserController {
                             status: 200,
                             userID: user._id,
                             email: user.email,
+                            name: user.name,
+                            userImg: user.image,
                             token,
                         }
                     });
