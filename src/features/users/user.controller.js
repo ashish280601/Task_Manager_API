@@ -160,12 +160,22 @@ export default class UserController {
                 });
             }
         } catch (error) {
-            console.log("Error in signIn", error);
-            return res.status(500).json({
-                message: "Something went wrongs",
-                success: false,
-                status: 500,
-            });
+           // Detailed error handling
+        console.error("Error in signUp:", error);
+
+        // Custom error messages based on error type
+        let errorMessage = "Something went wrong";
+        if (error.name === "ValidationError") {
+            errorMessage = "Validation error occurred";
+        } else if (error.name === "MongoError" && error.code === 11000) {
+            errorMessage = "Duplicate key error";
+        }
+
+        return res.status(500).json({
+            message: errorMessage,
+            success: false,
+            status: 500
+        });
         }
     }
 
