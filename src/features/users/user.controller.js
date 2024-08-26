@@ -62,10 +62,17 @@ export default class UserController {
             console.log("hashedPassword", hashedPassword);
 
             let profilePhotoUrl = null;
-            if (req.file) {
-                profilePhotoUrl = await uploadFileToS3(req.file);
+        if (req.file) {
+            // Ensure req.file is available and not null
+            profilePhotoUrl = await uploadFileToS3(req.file);
+            if (!profilePhotoUrl) {
+                return res.status(500).json({
+                    message: "Failed to upload profile photo",
+                    success: false,
+                    status: 500
+                });
             }
-
+        }
             const userData = {
                 fullName,
                 email,
