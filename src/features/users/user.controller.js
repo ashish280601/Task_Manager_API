@@ -36,22 +36,6 @@ export default class UserController {
             body('password')
                 .isLength({ min: 6 })
                 .withMessage('Password must be at least 6 characters long'),
-            body('image')
-                .custom((value, { req }) => {
-                    if (!req.file) {
-                        throw new Error('Image file is required');
-                    }
-
-                    const validMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                    if (!validMimeTypes.includes(req.file.mimetype)) {
-                        throw new Error('Invalid image format. Only JPEG, PNG, and GIF are allowed.');
-                    }
-
-                    if (req.file.size > 5 * 1024 * 1024) { // 5 MB limit
-                        throw new Error('Image file is too large. Maximum allowed size is 5MB.');
-                    }
-                    return true;
-                })
         ];
     }
 
